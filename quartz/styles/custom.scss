@@ -1,3 +1,239 @@
 @use "./base.scss";
 
-// put your custom CSS here!
+// Brutalist Minimal Theme - Exact isak.me Replica
+:root {
+  // Core palette
+  --coral: #ffb3a7; 
+  --text-primary: #000000;
+  --text-secondary: #555555;
+  --bg-main: #ffffff;
+  
+  // Quartz Variable Overrides
+  --light: var(--bg-main);
+  --lightgray: #e0e0e0;
+  --gray: #b8b8b8;
+  --darkgray: var(--text-secondary);
+  --dark: var(--text-primary);
+  --secondary: var(--text-primary);
+  --tertiary: var(--coral);
+  --highlight: var(--coral);
+  
+  // Typography
+  --headerFont: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --bodyFont: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  
+  --content-max-width: 800px;
+}
+
+// 1. GLOBAL LAYOUT FIX
+// Forces the page to act as a flex container so elements sit side-by-side
+.page {
+  display: flex;
+  flex-direction: column; // Mobile first
+  margin: 0;
+  padding: 0;
+  max-width: 1600px;
+  background: var(--bg-main);
+}
+
+body {
+  background: var(--bg-main);
+  color: var(--text-primary);
+  font-family: var(--bodyFont);
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+}
+
+// 2. SIDEBAR STYLING
+.left-sidebar, 
+.sidebar.left {
+  flex: 0 0 250px; // Don't let sidebar shrink
+  padding-top: 2rem !important;
+  border: none !important;
+
+  .page-title {
+    font-size: 1.2rem !important;
+    font-weight: 800 !important;
+    margin-bottom: 2rem !important;
+    
+    a {
+      color: black !important;
+      text-decoration: none;
+    }
+  }
+}
+
+// 2. THE CLEAN SIDEBAR (No "Explorer" Title)
+.left-sidebar, 
+.sidebar.left {
+  flex: 0 0 300px;
+  padding: 2rem 0 0 2rem !important;
+  border: none !important;
+
+  // HIDE THE "EXPLORER" TEXT AND UI ELEMENTS
+  .explorer > button,        // The "Explorer" text button
+  #explorer-header,          // The header container
+  .explorer h2,              // Fallback for header text
+  svg,                       // Any icons/chevrons
+  .folder-icon {
+    display: none !important;
+  }
+}
+
+.explorer {
+  width: 100%;
+  overflow-x: hidden !important; // Add this
+  
+  // Force text wrapping on links
+  a, button {
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    max-width: 100% !important;
+  }
+  
+  // Existing code...
+  ul, .folder-container {
+    list-style: none !important;
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+    display: block !important;
+    opacity: 1 !important;
+    overflow: hidden;
+    width: 100% !important; // Add this to constrain width
+  }
+  
+  li {
+    width: 100% !important; // And this
+    overflow-x: hidden !important;
+  }
+  // Remove all nested indentation
+  ul, .folder-container {
+    list-style: none !important;
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+    display: block !important;
+    opacity: 1 !important;
+  }
+
+  // Folders (e.g., "writeups")
+  .folder-outer > button {
+    pointer-events: none;
+    cursor: default;
+    font-weight: 800;
+    font-size: 1rem;
+    padding: 1rem 0 0.5rem 0 !important;
+    color: var(--text-primary);
+    background: transparent !important;
+    border: none !important;
+    text-align: left;
+    display: block;
+    width: 100%;
+  }
+
+  // File Links
+  li {
+    margin: 0 !important;
+  }
+
+  a {
+    color: var(--text-primary) !important;
+    text-decoration: none !important;
+    padding: 2px 8px !important;
+    display: inline-block !important;
+    font-size: 0.95rem;
+    margin-bottom: 2px;
+    
+    &:hover, &.active, &[aria-current="page"] {
+      background: var(--coral) !important;
+    }
+  }
+}
+
+// 3. CENTER CONTENT
+.center {
+  flex: 1;
+  min-width: 0;
+  padding: 2rem;
+}
+
+article {
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin-top: 0;
+    margin-bottom: 2rem;
+  }
+  p {
+    max-width: 70ch;
+    line-height: 1.6;
+  }
+}
+
+// 3. CENTER CONTENT FIX
+// This prevents the "Vertical Text" bug
+.center {
+  flex: 1;
+  min-width: 0; // Crucial: allows flex items to shrink below their content size
+  padding: 2rem 0;
+}
+
+article {
+  h1 {
+    font-size: 3rem;
+    font-weight: 900;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+  }
+
+  p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1.2rem;
+    max-width: 70ch; // Optimal reading width
+  }
+
+  // Body Links
+  a {
+    color: var(--text-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    
+    &:hover {
+      background: var(--coral);
+      text-decoration: none;
+    }
+  }
+}
+
+// 4. DESKTOP ADAPTATION
+@media (min-width: 1200px) {
+  .page {
+    flex-direction: row; // Sidebar and Content side-by-side
+    gap: 0;
+    padding: 0;
+  }
+}
+
+// 5. CLEANUP - HIDE UNWANTED QUARTZ UI
+.sidebar.right, 
+.backlinks, 
+.graph, 
+.toc, 
+.breadcrumbs,
+.overflow-end,
+footer,
+.search-container + .spacer {
+  display: none !important;
+}
+
+// Optional: Fix Search Bar styling to match minimalist vibe
+.search {
+  margin-bottom: 2rem;
+  #search-bar {
+    border: 1px solid #000;
+    border-radius: 0;
+    background: transparent;
+  }
+}
